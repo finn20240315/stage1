@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function getNumber(index) {
+        let result = 0;
+        for (let i = 1; i <= index; i++) {
+          if (i % 3 === 1) {
+            result += 4;
+          } else if (i % 3 === 2) {
+            result += 4;
+          } else {
+            result -= 1;
+          }
+        }
+        return result;
+      }
+
+      getNumber(1); // print 4
+      getNumber(5); // print 15
+      getNumber(10); // print 25
+      getNumber(30); // print 70
+    </script>
+  </body>
+</html>

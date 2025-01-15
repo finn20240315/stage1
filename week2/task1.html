@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function findAndPrint(messages, currentStation) {
+        let nearestFriend = null;
+        let minDistances = Infinity;
+
+        const station_distances = {
+          Songshan: 0,
+          "Nanjing Sanmin": 1,
+          "Taipei Arena": 2,
+          "Zhongxiao Fuxing": 3,
+          Ximen: 4,
+          "Chiang Kai-Shek Memorial Hall": 5,
+          Wanlong: 6,
+          Jingmei: 7,
+          Qizhang: 8,
+          Xiaobitan: 9,
+          "Xindian City Hall": 10,
+          Xindian: 11,
+        };
+      }
+      const messages = {
+        Bob: "I'm at Ximen MRT station.",
+        Mary: "I have a drink near Jingmei MRT station.",
+        Copper: "I just saw a concert at Taipei Arena.",
+        Leslie: "I'm at home near Xiaobitan station.",
+        Vivian: "I'm at Xindian station waiting for you.",
+      };
+
+      findAndPrint(messages, "Wanlong"); // print Mary
+      findAndPrint(messages, "Songshan"); // print Copper
+      findAndPrint(messages, "Qizhang"); // print Leslie
+      findAndPrint(messages, "Ximen"); // print Bob
+      findAndPrint(messages, "Xindian City Hall"); // print Vivian
+
+      console.log(hello);
+    </script>
+  </body>
+</html>
