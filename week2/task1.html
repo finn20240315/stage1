@@ -8,24 +8,59 @@
   <body>
     <script>
       function findAndPrint(messages, currentStation) {
-        let nearestFriend = null;
-        let minDistances = Infinity;
+        const metro = {
+        "Songshan": 0,
+        "Nanjing Sanmin": 1,
+        "Taipei Arena": 2,
+        "Nanjing Fuxing": 3,
+        "Songjiang Nanjing": 4,
+        "Zhongshan": 5,
+        "Beimen": 6,
+        "Ximen": 7,
+        "Xiaonanmen": 8,
+        "Chiang Kai-Shek Memorial Hall": 9,
+        "Guting": 10,
+        "Taipower Building": 11,
+        "Gongguan": 12,
+        "Wanlong": 13,
+        "Jingmei": 14,
+        "Dapinglin": 15,
+        "Qizhang": 16,
+        "Xiaobitan": 15,
+        "Xindian City Hall": 17,
+        "Xindian": 18
+    }
 
-        const station_distances = {
-          "Songshan": 0,
-          "Nanjing Sanmin": 1,
-          "Taipei Arena": 2,
-          "Zhongxiao Fuxing": 3,
-          "Ximen": 4,
-          "Chiang Kai-Shek Memorial Hall": 5,
-          "Wanlong": 6,
-          "Jingmei": 7,
-          "Qizhang": 8,
-          "Xiaobitan": 9,
-          "Xindian City Hall": 10,
-          "Xindian": 11,
-        };
+        
+        const currentIndex = metro[currentStation];
+        let nearestFriend = null;
+        let minDistance = Infinity;
+
+        
+        for (const [name, message] of Object.entries(messages)) {
+          for (const station in metro) {
+            
+            if (message.includes(station)) {
+              
+              const stationIndex = metro[station]; 
+              const distance = Math.abs(currentIndex - stationIndex); 
+              if (distance < minDistance) {
+                
+                minDistance = distance;
+                nearestFriend = name;
+              }
+            }
+          }
+        }
+
+        
+        if (nearestFriend) {
+          console.log(nearestFriend);
+        } else {
+          console.log("No friend found.");
+        }
       }
+
       const messages = {
         Bob: "I'm at Ximen MRT station.",
         Mary: "I have a drink near Jingmei MRT station.",
@@ -40,7 +75,6 @@
       findAndPrint(messages, "Ximen"); // print Bob
       findAndPrint(messages, "Xindian City Hall"); // print Vivian
 
-      console.log(hello);
     </script>
   </body>
 </html>

@@ -1,29 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <script>
-        // your code here, maybe 
-        function book(consultants, hour, duration, criteria){ 
-            // your code here 
-            } 
-        const consultants=[ 
-            {"name":"John", "rate":4.5, "price":1000}, 
-            {"name":"Bob", "rate":3, "price":1200}, 
-            {"name":"Jenny", "rate":3.8, "price":800} 
-        ]; 
-        
-        book(consultants, 15, 1, "price"); // Jenny 
-        book(consultants, 11, 2, "price"); // Jenny 
-        book(consultants, 10, 2, "price"); // John 
-        book(consultants, 20, 2, "rate"); // John 
-        book(consultants, 11, 1, "rate"); // Bob 
-        book(consultants, 11, 2, "rate"); // No Service 
-        book(consultants, 14, 3, "price"); // John
+      function book(consultants, hour, duration, criteria) {
+        // 排序顧問依據條件 (price 或 rate)
+        if (criteria === "price") {
+          consultants.sort((a, b) => a.price - b.price); // 按 price 從低到高排序
+        } else if (criteria === "rate") {
+          consultants.sort((a, b) => b.rate - a.rate); // 按 rate 從高到低排序
+        }
+
+        // 模擬每位顧問的已預約時間表
+        for (let c of consultants) {
+          if (!c.appointments) {
+            c.appointments = new Array(24).fill(0); // 初始化 24 小時的預約時間表
+          }
+
+          const start = hour;
+          const end = hour + duration;
+
+          let available = true; // 假設可預約
+          for (let i = start; i < end; i++) {
+            if (c.appointments[i] === 1) {
+              available = false; // 無法預約
+              break;
+            }
+          }
+
+          if (available) {
+            for (let i = start; i < end; i++) {
+              c.appointments[i] = 1; 
+            }
+            console.log(c.name); // 輸出顧問名稱
+            return; // 跳出函數，結束處理
+          }
+        }
+
+        // 如果所有顧問都無法預約，打印無服務
+        console.log("No Service");
+      }
+
+     
+      const consultants = [
+        { name: "John", rate: 4.5, price: 1000 },
+        { name: "Bob", rate: 3, price: 1200 },
+        { name: "Jenny", rate: 3.8, price: 800 },
+      ];
+
+      
+      book(consultants, 15, 1, "price"); // Jenny 
+      book(consultants, 11, 2, "price"); // Jenny 
+      book(consultants, 10, 2, "price"); // John 
+      book(consultants, 20, 2, "rate"); // John 
+      book(consultants, 11, 1, "rate"); // Bob 
+      book(consultants, 11, 2, "rate"); // No Service 
+      book(consultants, 14, 3, "price"); // John
     </script>
-</body>
+  </body>
 </html>
