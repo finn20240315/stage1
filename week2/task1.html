@@ -9,51 +9,52 @@
     <script>
       function findAndPrint(messages, currentStation) {
         const metro = {
-        "Songshan": 0,
-        "Nanjing Sanmin": 1,
-        "Taipei Arena": 2,
-        "Nanjing Fuxing": 3,
-        "Songjiang Nanjing": 4,
-        "Zhongshan": 5,
-        "Beimen": 6,
-        "Ximen": 7,
-        "Xiaonanmen": 8,
-        "Chiang Kai-Shek Memorial Hall": 9,
-        "Guting": 10,
-        "Taipower Building": 11,
-        "Gongguan": 12,
-        "Wanlong": 13,
-        "Jingmei": 14,
-        "Dapinglin": 15,
-        "Qizhang": 16,
-        "Xiaobitan": 15,
-        "Xindian City Hall": 17,
-        "Xindian": 18
-    }
-
-        
+          "Songshan": 0,
+          "Nanjing Sanmin": 1,
+          "Taipei Arena": 2,
+          "Nanjing Fuxing": 3,
+          "Songjiang Nanjing": 4,
+          "Zhongshan": 5,
+          "Beimen": 6,
+          "Ximen": 7,
+          "Xiaonanmen": 8,
+          "Chiang Kai-Shek Memorial Hall": 9,
+          "Guting": 10,
+          "Taipower Building": 11,
+          "Gongguan": 12,
+          "Wanlong": 13,
+          "Jingmei": 14,
+          "Dapinglin": 15,
+          "Qizhang": 16,
+          "Xiaobitan": 16,
+          "Xindian City Hall": 17,
+          "Xindian": 18,
+        };
         const currentIndex = metro[currentStation];
         let nearestFriend = null;
         let minDistance = Infinity;
 
-        
         for (const [name, message] of Object.entries(messages)) {
           for (const station in metro) {
-            
             if (message.includes(station)) {
-              
-              const stationIndex = metro[station]; 
-              const distance = Math.abs(currentIndex - stationIndex); 
-              if (distance < minDistance) {
-                
-                minDistance = distance;
-                nearestFriend = name;
+              const stationIndex = metro[station];
+              if (station == "Xiaobitan") {
+                let distance = Math.abs(currentIndex - stationIndex) + 1;
+                if (distance < minDistance) {
+                  minDistance = distance;
+                  nearestFriend = name;
+                }
+              } else {
+                let distance = Math.abs(currentIndex - stationIndex);
+                if (distance < minDistance) {
+                  minDistance = distance;
+                  nearestFriend = name;
+                }
               }
             }
           }
         }
 
-        
         if (nearestFriend) {
           console.log(nearestFriend);
         } else {
@@ -74,7 +75,10 @@
       findAndPrint(messages, "Qizhang"); // print Leslie
       findAndPrint(messages, "Ximen"); // print Bob
       findAndPrint(messages, "Xindian City Hall"); // print Vivian
-
+      findAndPrint(messages, "Dapinglin"); // print Mary
+      findAndPrint(messages, "Xiaobitan"); // print Leslie
+      findAndPrint(messages, "Jingmei"); // print Mary
+      findAndPrint(messages, "Xindian"); // print Vivian
     </script>
   </body>
 </html>
