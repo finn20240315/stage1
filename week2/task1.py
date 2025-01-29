@@ -17,29 +17,29 @@ def find_and_print(messages, current_station):
         "Jingmei": 14,
         "Dapinglin": 15,
         "Qizhang": 16,
-        "Xiaobitan": 15,
+        "Xiaobitan": 16,
         "Xindian City Hall": 17,
         "Xindian": 18,
     }
 
-   
     current_index = metro[current_station]
     nearest_friend = None
     min_distance = float("inf")
-
     
     for name, message in messages.items():
         for station in metro:
-            
             if station in message:
-                
                 station_index = metro[station] 
-                distance = abs(current_index - station_index)  
-                if distance < min_distance:
-                    
-                    min_distance = distance
-                    nearest_friend = name  
-
+                if station == "Xiaobitan":
+                    distance = abs(current_index - station_index)  +1
+                    if distance < min_distance:
+                        min_distance = distance
+                        nearest_friend = name 
+                else:
+                    distance = abs(current_index - station_index)
+                    if distance < min_distance:
+                        min_distance = distance
+                        nearest_friend = name
     
     if nearest_friend:
         print(nearest_friend)
@@ -56,9 +56,19 @@ messages = {
     "Vivian": "I'm at Xindian station waiting for you.",
 }
 
+# "Bob": "Ximen",
+# "Mary": "Jingmei",
+# "Copper": "Taipei Arena",
+# "Leslie": "Xiaobitan",
+# "Vivian": "Xindian",
+
 
 find_and_print(messages, "Wanlong") # print Mary 
 find_and_print(messages, "Songshan") # print Copper 
 find_and_print(messages, "Qizhang") # print Leslie 
 find_and_print(messages, "Ximen") # print Bob 
 find_and_print(messages, "Xindian City Hall") # print Vivian
+find_and_print(messages, "Dapinglin") # print Mary
+find_and_print(messages, "Xiaobitan") # print Leslie
+find_and_print(messages, "Jingmei") # print Mary
+find_and_print(messages, "Xindian") # print Vivian
