@@ -1,49 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title></title>
   </head>
   <body>
     <script>
       function func(...data) {
-        let middleNames = data.map(findOut);
-        function findOut(name) {
-          if (name.length == 2 || name.length == 3) {
+        function findMiddleName(name) {
+          if (name.length === 2 || name.length === 3) {
             return name[1];
-          } else if (name.length == 4 || name.length == 5) {
+          } else if (name.length === 4 || name.length === 5) {
             return name[2];
           }
+          return "";
         }
 
-        let uniqueName = [];
-        for (let name of middleNames) {
-          if (middleNames.indexOf(name) == middleNames.lastIndexOf(name)) {
-            uniqueName.push(name);
-          }
-        }
+        let middleNames = data.map(findMiddleName);
 
-        let uniqueFullName = [];
-        for (let n of data) {
-          if (uniqueName.includes(n[1])) {
-            uniqueFullName.push(n);
-          } else if (uniqueName.includes(n[2])) {
-            uniqueFullName.push(n);
-          }
-        }
+        let uniqueMiddleNames = middleNames.filter(
+          (name) => middleNames.indexOf(name) === middleNames.lastIndexOf(name)
+        );
 
-        if (uniqueName.length == 0) {
+        let uniqueFullNames = data.filter(
+          (name) =>
+            uniqueMiddleNames.includes(name[1]) ||
+            uniqueMiddleNames.includes(name[2])
+        );
+
+        if (uniqueFullNames.length === 0) {
           console.log("沒有");
         } else {
-          console.log(uniqueFullName);
+          console.log(uniqueFullNames.join("、"));
         }
       }
 
-      func("彭大牆", "陳王明雅", "吳明"); // print 彭大牆 
-      func("郭靜雅", "王立強", "郭林靜宜", "郭立恆", "林花花"); // print 林花花 
-      func("郭宣雅", "林靜宜", "郭宣恆", "林靜花"); // print 沒有 
-      func("郭宣雅", "夏曼藍波安", "郭宣恆"); // print 夏曼藍波安 
-      </script>
+      func("彭大牆", "陳王明雅", "吳明"); // print 彭大牆
+      func("郭靜雅", "王立強", "郭林靜宜", "郭立恆", "林花花"); // print 林花花
+      func("郭宣雅", "林靜宜", "郭宣恆", "林靜花"); // print 沒有
+      func("郭宣雅", "夏曼藍波安", "郭宣恆"); // print 夏曼藍波安
+      func("郭宣雅", "夏曼藍波安", "郭宣恆", "林靜花"); // print 夏曼藍波安、林靜花
+    </script>
   </body>
 </html>
