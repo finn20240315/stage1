@@ -23,11 +23,21 @@
           (name) => middleNames.indexOf(name) === middleNames.lastIndexOf(name)
         );
 
-        let uniqueFullNames = data.filter(
-          (name) =>
-            uniqueMiddleNames.includes(name[1]) ||
+        let uniqueFullNames = data.filter((name) => {
+          if (
+            (name.length === 2 || name.length === 3) &&
+            uniqueMiddleNames.includes(name[1])
+          ) {
+            return true;
+          }
+          if (
+            (name.length === 4 || name.length === 5) &&
             uniqueMiddleNames.includes(name[2])
-        );
+          ) {
+            return true;
+          }
+          return false;
+        });
 
         if (uniqueFullNames.length === 0) {
           console.log("沒有");
@@ -41,6 +51,7 @@
       func("郭宣雅", "林靜宜", "郭宣恆", "林靜花"); // print 沒有
       func("郭宣雅", "夏曼藍波安", "郭宣恆"); // print 夏曼藍波安
       func("郭宣雅", "夏曼藍波安", "郭宣恆", "林靜花"); // print 夏曼藍波安、林靜花
+      func("彭大牆", "陳大明雅", "吳明"); // print 彭大牆
     </script>
   </body>
 </html>
