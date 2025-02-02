@@ -10,14 +10,16 @@ def func(*data):
   
     uniqueMiddle=[]
     for m in middle:
-        if middle.count(m) == 1 and n != "":
+        if middle.count(m) == 1 and m != "":
             uniqueMiddle.append(m)
 
     uniqueFullName=[]
     for c in data:
-        if (len(c)>1 and c[1] in uniqueMiddle) or (len(c)>2 and c[2] in uniqueMiddle) :
+        if (len(c) == 2 or len(c) == 3) and c[1] in uniqueMiddle:
             uniqueFullName.append(c)
-    
+        elif (len(c) == 4 or len(c) == 5) and c[2] in uniqueMiddle:
+            uniqueFullName.append(c)
+       
     # 如果沒有獨特的中間字，則印出沒有
     if len(uniqueMiddle) == 0 :
         print("沒有")
@@ -36,3 +38,4 @@ func("郭靜雅", "王立強", "郭林靜宜", "郭立恆", "林花花") # print
 func("郭宣雅", "林靜宜", "郭宣恆", "林靜花") # print 沒有 
 func("郭宣雅", "夏曼藍波安", "郭宣恆") # print 夏曼藍波安
 func("郭宣雅", "夏曼藍波安", "郭宣恆", "林靜花") # print 夏曼藍波安、林靜花
+func("彭大牆", "陳大明雅", "吳明") # print 彭大牆
