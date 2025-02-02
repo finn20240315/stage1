@@ -72,7 +72,7 @@ for spot in slist:
             mrt_dict[MRT["MRT"]] = set()  # 初始化該捷運站的景點清單
 
         # 檢查景點的 info 是否包含捷運站名稱
-        if MRT["MRT"] in spot["info"]:
+        if spot["SERIAL_NO"] == MRT["SERIAL_NO"]:
             mrt_dict[MRT["MRT"]].add(spot["stitle"])
 
 # 動態生成表頭，最大景點數量
