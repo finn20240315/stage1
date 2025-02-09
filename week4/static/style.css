@@ -1,0 +1,34 @@
+body {
+  margin: 0px;
+}
+h2 {
+  background-color: #223344;
+  color: white;
+  width: 100%;
+  height: 100px;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+form {
+  text-align: center;
+}
+h3,
+h4,
+a {
+  margin: 20px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+input {
+  margin: 5px;
+}
+button {
+  margin: 5px;
+}

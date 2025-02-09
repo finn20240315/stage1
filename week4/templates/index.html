@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>index</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <h2>歡迎光臨，請輸入帳號密碼</h2>
+    <form action="/signin" method="post" onsubmit="return submitForm()">
+      <h3>登入系統</h3>
+      帳號 <input type="text" name="username" id="username" required /><br />
+      密碼 <input type="text" name="password" id="password" required /><br />
+      同意條款 <input type="checkbox" id="checkbox" /><br />
+      <button type="submit">登入</button>
+    </form>
+    <script>
+      function submitForm() {
+        let checkbox = document.getElementById("checkbox");
+        if (!checkbox.checked) {
+          alert("請先勾選同意條款！");
+          return false;
+        } else {
+          return true;
+        }
+      }
+    </script>
+  </body>
+</html>
