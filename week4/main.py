@@ -16,7 +16,6 @@ class myMiddleware(BaseHTTPMiddleware):
         if request.url.path.startswith("/member") and logined != "true":
             return RedirectResponse("/",status_code=302)
         
-           # 繼續執行後續請求
         response = await call_next(request)
         return response
     
@@ -28,9 +27,9 @@ def home(request: Request):
 
 @app.post("/signin")
 async def signin(username: str = Form(...), password: str = Form(...)):
-    if username == "test" and password == "test":  # 這裡可以改成資料庫驗證
+    if username == "test" and password == "test": 
         response = RedirectResponse(url="/member", status_code=302)
-        response.set_cookie(key="already_login", value="true")  # 設置登入 Cookie
+        response.set_cookie(key="already_login", value="true")  
         return response
     return RedirectResponse(url="/error?message=登入失敗，請重新輸入", status_code=302)
 
@@ -54,7 +53,7 @@ async def member():
 @app.get("/signout")
 async def logout():
     response = RedirectResponse(url="/", status_code=302)
-    response.delete_cookie("already_login")  # 刪除登入 Cookie
+    response.delete_cookie("already_login")  
     return response
 
 @app.get("/error")
