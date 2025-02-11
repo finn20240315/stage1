@@ -2,12 +2,12 @@
 # 😎 Task 2: Create database and table in your MySQL server
   
 
-1. Create a new database named website.
-![task2-1_a](./imgs/task2/task2-1_a.png)
-![task2-1_b](./imgs/task2/task2-1_b.png)
-2. Create a new table named member, in the website database, designed 
-![task2-2_a](./imgs/task2/task2-2_a.png)
-![task2-2_a](./imgs/task2/task2-2_b.png)
+1. Create a new database named website.<br>
+![task2-1_a](./imgs/task2/task2-1_a.png)<br>
+![task2-1_b](./imgs/task2/task2-1_b.png)<br>
+2. Create a new table named member, in the website database, designed<br> 
+![task2-2_a](./imgs/task2/task2-2_a.png)<br>
+![task2-2_a](./imgs/task2/task2-2_b.png)<br>
   
 
 # 😎 Task 3: SQL CRUD
