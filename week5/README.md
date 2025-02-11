@@ -3,11 +3,11 @@
   
 
 1. Create a new database named website.
-![task2-1_a](/imgs/task2/task2-1_a.png)
-![task2-1_b](/imgs/task2/task2-1_b.png)
+![task2-1_a](./imgs/task2/task2-1_a.png)
+![task2-1_b](./imgs/task2/task2-1_b.png)
 2. Create a new table named member, in the website database, designed 
-![task2-2_a](/imgs/task2/task2-2_a.png)
-![task2-2_a](/imgs/task2/task2-2_b.png)
+![task2-2_a](./imgs/task2/task2-2_a.png)
+![task2-2_a](./imgs/task2/task2-2_b.png)
   
 
 # 😎 Task 3: SQL CRUD
