@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>index</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <h2>歡迎光臨，請註冊登入系統</h2>
+    <form action="/signup" method="post" onsubmit="return submitForm_1()">
+      <h3>註冊帳號</h3>
+      姓名
+      <input type="text" name="name_1" id="name_1"/><br />
+      帳號
+      <input type="text" name="username_1" id="username_1"/><br />
+      密碼
+      <input type="text" name="password_1" id="password_1"/><br />
+      <button type="submit">註冊</button>
+    </form>
+    <br />
+    <hr />
+    <form action="/signin" method="post" onsubmit="return submitForm_2()">
+      <h3>登入系統</h3>
+      帳號
+      <input type="text" name="username_2" id="username_2"/><br />
+      密碼
+      <input type="text" name="password_2" id="password_2"/><br />
+      <button type="submit">登入</button>
+    </form>
+    <script>
+      function submitForm_1() {
+        const name_1 = document.getElementById("name_1").value;
+        const username_1 = document.getElementById("username_1").value;
+        const password_1 = document.getElementById("password_1").value;
+
+        if (name_1 === "" || username_1 === "" || password_1 === "") {
+          alert("請填寫上方所有欄位!");
+          return false;
+        }
+        return true;
+      }
+
+      function submitForm_2() {
+        const username_2 = document.getElementById("username_2").value;
+        const password_2 = document.getElementById("password_2").value;
+
+        if (username_2 === "" || password_2 === "") {
+          alert("請填寫下方所有欄位!");
+          return false;
+        }
+        return true;
+      }
+    </script>
+  </body>
+</html>

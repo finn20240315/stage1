@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>member</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <h2>歡迎光臨，這是會員頁</h2>
+    <h4>{{username}}，歡迎登入系統</h4>
+    <a href="/signout">登出系統</a>
+    <hr />
+    <h4>快來留言吧</h4>
+    <form action="/createMessage" method="post">
+      內容
+      <input type="text" name="content" id="content" /><br />
+      <button type="submit">送出</button>
+    </form>
+    <hr />
+    {% for username,content in all_content %}
+      <div style="text-align: center;">
+        <span style="font-weight: bold;">{{username}}：</span>
+        <span>{{content}}</span>
+        <br>
+      </div>
+      {% else %}
+      <p>沒有留言資料</p>  <!-- 如果沒有留言顯示這個訊息 -->
+      {% endfor %}
+  </body>
+</html>
