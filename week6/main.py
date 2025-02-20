@@ -10,7 +10,7 @@ from starlette.middleware.sessions import SessionMiddleware
 import mysql.connector
 con=mysql.connector.connect(
     user="root",
-    password="abcd",
+    password="0000",
     host="localhost",
     database="website"
 )
@@ -35,12 +35,13 @@ templates = Jinja2Templates(directory="templates")
 
 class myMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
-      print(f"被攔截的請求: {request.method} {request.url}")
-       
+        print(f"被攔截的請求: {request.method} {request.url}")
+        
         logined = request.session.get("already_login")
+        
         if request.url.path.startswith("/member") and logined != "true":
             return RedirectResponse("/",status_code=302)
-           
+        
         response = await call_next(request)
         return response
     
@@ -50,6 +51,10 @@ app.add_middleware(myMiddleware)
 def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+@app.get("/signin")
+def redirect_signin():
+    return RedirectResponse(url="/",status_code=302)
+       
 @app.post("/signin") 
 def signin(request:Request,username_2: str = Form(...), password_2: str = Form(...)):
     cursor=con.cursor()
@@ -68,17 +73,11 @@ def signin(request:Request,username_2: str = Form(...), password_2: str = Form(.
 def member(request: Request):
     logined=request.session.get("already_login")
     username_2=request.session.get("username_2")
-    
+
     if logined != "true":
         return RedirectResponse(url="/",status_code=302)
     
     cursor=con.cursor()
-    cursor.execute("SELECT id FROM member WHERE username=%s",[username_2])
-    member_id=cursor.fetchone()
-
-    if not member_id:
-        return RedirectResponse(url="/error?message=使用者不存在", status_code=302)
-
     cursor.execute("SELECT member.username, message.content FROM member JOIN message ON member.id = message.member_id")
     all_content = cursor.fetchall()
     print("在'/member'裡的所有留言：",all_content)
@@ -88,40 +87,33 @@ def member(request: Request):
         "username": username_2,
         "all_content": all_content  
     })
-
+    
+@app.get("/createMessage")
+def redirect_createMessage():
+    return RedirectResponse(url="/",status_code=302)
+  
 @app.post("/createMessage")
 def createMessage(request: Request,content:Annotated[str,Form(...)]):
     logined = request.session.get("already_login")
     username_2 = request.session.get("username_2")
     print(f"登入狀態: {logined}, 使用者名稱: {username_2}")
 
-    if logined !="true":
+    if logined !="true": 
         return RedirectResponse(url="/",status_code=302)
 
-    cursor=con.cursor()
+    cursor=con.cursor() # 建立 cursor 物件
     cursor.execute("SELECT id FROM member WHERE username=%s",[username_2])
-    member_id=cursor.fetchone()
+    member_id=cursor.fetchone()[0]
     print("使用者id：",member_id)
 
-    if not member_id:
-        return RedirectResponse(url="/error?message=使用者不存在", status_code=302)
-
-    cursor.execute("INSERT INTO message(member_id,content) VALUES(%s,%s)",[member_id[0],content])
+    cursor.execute("INSERT INTO message(member_id,content) VALUES(%s,%s)",[member_id,content])
     con.commit()
-    cursor.execute("SELECT member.username,message.content FROM member JOIN message ON member.id=message.member_id")
-    all_content=cursor.fetchall()
-
-    print("所有留言：",all_content)
-
-    return templates.TemplateResponse("member.html", {
-        "request": request,
-        "username": username_2,
-        "all_content": all_content  
-    })
+   
+    return RedirectResponse(url="/member",status_code=302)
 
 @app.get("/signout")
 def signout(request: Request):
-    request.session.clear() 
+    request.session.clear() # 會刪除 session 裡的全部資訊，包括 already_login、username 等
     return RedirectResponse(url="/", status_code=302)
 
 @app.get("/error")
@@ -131,4 +123,3 @@ async def error(request:Request,message: str):
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.add_middleware(SessionMiddleware, secret_key='my-secret-key', https_only=True, max_age=1800)
-
