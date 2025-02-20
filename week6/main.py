@@ -10,7 +10,7 @@ from starlette.middleware.sessions import SessionMiddleware
 import mysql.connector
 con=mysql.connector.connect(
     user="root",
-    password="0000",
+    password="abcd",
     host="localhost",
     database="website"
 )
