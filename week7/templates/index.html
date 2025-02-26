@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>index</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <h2>歡迎光臨，請註冊登入系統</h2>
+    <form onsubmit="return submitForm_1()">
+      <h3>註冊帳號</h3>
+      姓名
+      <input type="text" name="name_1" id="name_1" /><br />
+      帳號
+      <input type="text" name="username_1" id="username_1" /><br />
+      密碼
+      <input type="text" name="password_1" id="password_1" /><br />
+      <button type="submit">註冊</button>
+    </form>
+    <br />
+    <hr />
+    <form id="signinForm" onsubmit="return submitForm_2()">
+      <h3>登入系統</h3>
+      帳號
+      <input type="text" name="username_2" id="username_2" /><br />
+      密碼
+      <input type="text" name="password_2" id="password_2" /><br />
+      <button type="submit">登入</button>
+    </form>
+    <script>
+      function submitForm_1() {
+        const name_1 = document.getElementById("name_1").value;
+        const username_1 = document.getElementById("username_1").value;
+        const password_1 = document.getElementById("password_1").value;
+
+        if (name_1 === "" || username_1 === "" || password_1 === "") {
+          alert("請填寫上方所有欄位!");
+          return false;
+        }
+        fetch("/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name_1: name_1,
+            username_1: username_1,
+            password_1: password_1,
+          }),
+        })
+          .then((response) => {
+            if (response.redirected) {
+              // 如果伺服器發送了重定向，手動處理跳轉
+              window.location.href = response.url;
+            } else if (response.ok) {
+              // 請求成功，但沒有重定向
+              // 這裡可以做一些處理，例如顯示成功訊息
+              console.log("註冊成功");
+            } else {
+              // 處理錯誤
+              console.error("錯誤訊息:", response.statusText);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("發生錯誤，請稍後再試!");
+          });
+
+        return false; // 防止表單默認提交
+      }
+
+      function submitForm_2() {
+        const username_2 = document.getElementById("username_2").value;
+        const password_2 = document.getElementById("password_2").value;
+
+        if (username_2 === "" || password_2 === "") {
+          alert("請填寫下方所有欄位!");
+          return false;
+        }
+
+        fetch("/signin", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // 傳遞 JSON 格式的資料
+          },
+          body: JSON.stringify({
+            username_2: username_2,
+            password_2: password_2,
+          }),
+        })
+          .then((response) => {
+            console.log("Response status:", response.status);
+            console.log("Location header:", response.headers.get("Location"));
+
+            if (response.status === 302 || response.status === 303) {
+              // 捕捉 302 或 303 重定向，並進行跳轉
+              window.location.href = response.headers.get("Location");
+            } else if (response.ok) {
+              // 請求成功，但沒有重定向，這裡可以顯示成功訊息或進行其他處理
+              console.log("登入成功");
+            } else {
+              // 處理錯誤，顯示錯誤訊息
+              console.error("登入錯誤:", response.statusText);
+              alert("登入失敗，請檢查帳號或密碼！");
+            }
+          })
+          .catch((error) => {
+            console.error("登入錯誤", error);
+            alert("發生錯誤，請稍後再試!");
+          });
+        return false;
+      }
+    </script>
+  </body>
+</html>
