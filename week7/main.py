@@ -23,7 +23,6 @@ print("database ready")
 
 templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "templates"))
 
-# http://127.0.0.1:8000/docs#/ 可以看到所有的API文件
 app=FastAPI() 
 
 app.add_middleware(SessionMiddleware, secret_key='my-secret-key', https_only=True, max_age=1800)
@@ -32,7 +31,6 @@ class myMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         print(f"被攔截的請求: {request.method} {request.url}")
         
-        # 確保 request.session 存在
         session = request.scope.get("session", {})
         logined = session.get("already_login", "false")
 
@@ -61,7 +59,7 @@ async def signup(request:Request):
     cursor=con.cursor()
     cursor.execute("SELECT * FROM member WHERE username = %s",[username_1])
     result=cursor.fetchone()
-    print(f"🔍 查詢結果 result: {result}")
+    print(f"查詢結果 result: {result}")
 
     if result:
         return RedirectResponse(url="/error?message=使用者名稱重複", status_code=303)
@@ -81,7 +79,6 @@ async def signin(request:Request):
     username_2=data.get("username_2")
     password_2=data.get("password_2")
 
-    # 檢查是否有接收到資料
     if not username_2 or not password_2:
         logging.debug(f"未提供使用者名稱或密碼: username_2={username_2}, password_2={password_2}")
         return RedirectResponse(url="/error?message=請提供使用者名稱和密碼", status_code=400)
@@ -92,24 +89,23 @@ async def signin(request:Request):
         cursor=con.cursor()
         cursor.execute("SELECT id,username,password FROM member WHERE username=%s and password=%s",[username_2,password_2])
         result_2=cursor.fetchone()
-        print(f"🔍 查詢結果 result_2: {result_2}")
+        print(f"查詢結果 result_2: {result_2}")
         request.session["user_id"] = result_2[0]
-        print(f"🔍 查詢結果 result_2[0]: {result_2[0]}")
+        print(f"查詢結果 result_2[0]: {result_2[0]}")
         
         logging.debug(f"查詢結果: {result_2}")
     
         if result_2 :
             request.session["already_login"]="true"
             request.session["username_2"]=username_2
-            request.session["user_id"]=result_2[0] # 假設 id 是結果中的第一個欄位
-            print("Session 已設置：", request.session)  # 打印 session，檢查是否成功設置
+            request.session["user_id"]=result_2[0] 
+            print("Session 已設置：", request.session)  
             logging.debug(f"登入成功，Session 設定: {request.session}")
             print("登入成功，session是：",request.session)
             print(f"Redirecting to /member?username={username_2}")
 
             return RedirectResponse(url=f"/member?username={username_2}", status_code=302)
         else:
-            # 如果沒找到匹配的帳號密碼，返回錯誤
             logging.debug(f"登入失敗，未找到匹配的使用者: username={username_2}")
             return RedirectResponse(url="/error?message=使用者名稱或密碼錯誤", status_code=302)
      
@@ -119,22 +115,18 @@ async def signin(request:Request):
     
 @app.patch("/api/member")
 async def update_member_name(request: Request):
-    # 檢查用戶是否已經登入
     logined = request.session.get("already_login")
     if logined != "true":
         return JSONResponse(content={"error": True}, status_code=401)
 
-    # 從請求中獲取新的姓名
     data = await request.json()
     new_name = data.get("name")
 
     if not new_name:
         return JSONResponse(content={"error": True}, status_code=400)
 
-    # 更新資料庫中的姓名（此處假設有 member_id 存在）
     member_id = request.session.get("user_id")
 
-    # 資料庫更新邏輯
     cursor = con.cursor()
     cursor.execute("UPDATE member SET name = %s WHERE id = %s", [new_name, member_id])
     con.commit()
@@ -146,18 +138,15 @@ async def update_member_name(request: Request):
 
 @app.get("/api/member")
 async def get_member(request: Request, username: str):
-    # 檢查使用者是否已登入
     logined = request.session.get("already_login")
     
     if logined != "true":
         return JSONResponse(content={"data": None}, status_code=401)  # 未登入
 
-    # 查詢會員資料
     cursor = con.cursor()
     cursor.execute("SELECT id, name, username FROM member WHERE username = %s", [username])
     result = cursor.fetchone()
 
-    # 如果有找到會員資料
     if result:
         member_data = {
             "id": result[0],
@@ -166,7 +155,6 @@ async def get_member(request: Request, username: str):
         }
         return JSONResponse(content={"data": member_data}, status_code=200)
     
-    # 如果沒有找到會員資料
     return JSONResponse(content={"data": None}, status_code=404)
 
 @app.get("/member")
@@ -201,11 +189,9 @@ def createMessage(request: Request,content:Annotated[str,Form(...)]):
     if logined !="true": 
         return RedirectResponse(url="/",status_code=302)
 
-    # 從 session 中取得 user_id
     member_id = request.session["user_id"]
     print(f"取得的 member_id: {member_id}")
     
-    # 現在可以直接使用 user_id 來建立留言，而不需要再次查詢資料庫
     cursor = con.cursor()
     cursor.execute("INSERT INTO message (member_id, content) VALUES (%s, %s)", [member_id, content])
     con.commit()
@@ -214,7 +200,7 @@ def createMessage(request: Request,content:Annotated[str,Form(...)]):
 
 @app.get("/signout")
 def signout(request: Request):
-    request.session.clear() # 會刪除 session 裡的全部資訊，包括 already_login、username 等
+    request.session.clear() 
     return RedirectResponse(url="/", status_code=302)
 
 
