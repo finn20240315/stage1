@@ -51,14 +51,10 @@
         })
           .then((response) => {
             if (response.redirected) {
-              // 如果伺服器發送了重定向，手動處理跳轉
               window.location.href = response.url;
             } else if (response.ok) {
-              // 請求成功，但沒有重定向
-              // 這裡可以做一些處理，例如顯示成功訊息
               console.log("註冊成功");
             } else {
-              // 處理錯誤
               console.error("錯誤訊息:", response.statusText);
             }
           })
@@ -67,7 +63,7 @@
             alert("發生錯誤，請稍後再試!");
           });
 
-        return false; // 防止表單默認提交
+        return false; 
       }
 
       function submitForm_2() {
@@ -82,7 +78,7 @@
         fetch("/signin", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json", // 傳遞 JSON 格式的資料
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             username_2: username_2,
@@ -94,13 +90,10 @@
             console.log("Location header:", response.headers.get("Location"));
 
             if (response.status === 302 || response.status === 303) {
-              // 捕捉 302 或 303 重定向，並進行跳轉
               window.location.href = response.headers.get("Location");
             } else if (response.ok) {
-              // 請求成功，但沒有重定向，這裡可以顯示成功訊息或進行其他處理
               console.log("登入成功");
             } else {
-              // 處理錯誤，顯示錯誤訊息
               console.error("登入錯誤:", response.statusText);
               alert("登入失敗，請檢查帳號或密碼！");
             }
